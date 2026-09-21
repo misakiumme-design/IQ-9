@@ -461,7 +461,7 @@ function showFinalRanking() {
 
   memberList.innerHTML = "";
 
-  progress.textContent = "好き顔9";
+  progress.textContent = "🏅あなたのランキング🏅";
   instruction.textContent = "";
 
   const ranking = [...finalCandidates].sort(
