@@ -52,16 +52,19 @@ h1 {
 .member-card img {
   display: block;
   width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: contain !important;
-  object-position: center center !important;
-  background: #fff;
+  height: auto;
 }
 
 .member-name {
-  padding: 8px 4px;
+  padding: 8px 4px 2px;
   font-size: 14px;
   font-weight: bold;
+}
+
+.member-group {
+  padding: 0 4px 8px;
+  font-size: 11px;
+  color: #777;
 }
 
 .member-card.selected {
