@@ -197,3 +197,46 @@ h1 {
   font-size: 15px;
   font-weight: bold;
 }
+.ranking-list {
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.ranking-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 55px 90px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.ranking-item img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  object-position: center top;
+  border-radius: 8px;
+}
+
+.ranking-number {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ranking-name {
+  font-weight: bold;
+}
+
+.ranking-group {
+  font-size: 11px;
+  color: #777;
+}
+
+.ranking-wins {
+  font-weight: bold;
+}
