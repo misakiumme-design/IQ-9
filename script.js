@@ -462,31 +462,35 @@ function showFinalRanking() {
   memberList.innerHTML = "";
 
   progress.textContent = "好き顔9";
-
-  instruction.textContent =
-    "あなたの好き顔ランキング TOP9";
+  instruction.textContent = "";
 
   const ranking = [...finalCandidates].sort(
     (a, b) => finalWins[b.id] - finalWins[a.id]
   );
 
   const result = document.createElement("div");
-
   result.className = "ranking-list";
 
   ranking.slice(0, 9).forEach((member, index) => {
     const item = document.createElement("div");
-
     item.className = "ranking-item";
 
+    let rankText = `${index + 1}位`;
+
+    if (index === 0) {
+      rankText = "🥇1位";
+    } else if (index === 1) {
+      rankText = "🥈2位";
+    } else if (index === 2) {
+      rankText = "🥉3位";
+    }
+
     item.innerHTML = `
-      <div class="ranking-number">${index + 1}位</div>
-      <img src="${member.image}" alt="${member.name}">
-      <div>
-        <div class="ranking-name">${member.name}</div>
-        <div class="ranking-group">${member.group}</div>
+      <div class="ranking-photo">
+        <img src="${member.image}" alt="${member.name}">
+        <div class="ranking-badge">${rankText}</div>
       </div>
-      <div class="ranking-wins">${finalWins[member.id]}勝</div>
+      <div class="ranking-name">${member.name}</div>
     `;
 
     result.appendChild(item);
@@ -497,7 +501,6 @@ function showFinalRanking() {
   nextButton.style.display = "none";
   backButton.style.display = "none";
 }
-
 nextButton.addEventListener("click", () => {
 
   if (phase === "mainIntro") {
