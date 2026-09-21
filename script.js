@@ -9,11 +9,11 @@ const members = [
   { id: 8, name: "YUYU", group: "MAGICAL SPEC", image: "images/YUYU.JPG" },
   { id: 9, name: "一条虹花", group: "IQP研究生", image: "images/一条虹花.JPG" },
   { id: 10, name: "七瀬りあ", group: "IQP研究生", image: "images/七瀬りあ.JPG" },
-  { id: 11, name: "伊藤麻希", group: "トキヲイキル", image: "images/itomaki.jpg" },
+  { id: 11, name: "伊藤麻希", group: "トキヲイキル", image: "images/伊藤麻希.jpg" },
   { id: 12, name: "優希", group: "HelloYouth", image: "images/優希.JPG" },
   { id: 13, name: "原直子", group: "トキヲイキル", image: "images/原直子.JPG" },
   { id: 14, name: "大島向葵", group: "HelloYouth", image: "images/大島向葵.JPG" },
-  { id: 15, name: "大庭彩歌", group: "トキヲイキル", image: "images/obaayaka.jpg" },
+  { id: 15, name: "大庭彩歌", group: "トキヲイキル", image: "images/大庭彩歌.jpg" },
   { id: 16, name: "大石芽依", group: "トキヲイキル(サポメン)", image: "images/大石芽依.JPG" },
   { id: 17, name: "大葉みらい", group: "HelloYouth", image: "images/大葉みらい.JPG" },
   { id: 18, name: "天瀬かな", group: "トキヲイキル(サポメン)", image: "images/天瀬かな.JPG" },
@@ -228,7 +228,7 @@ function showMainIntro() {
 
   memberList.innerHTML = "";
 
-  progress.textContent = "本選";
+  progress.textContent = "";
   instruction.textContent = "";
 
   nextButton.style.display = "";
