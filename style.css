@@ -90,43 +90,46 @@ h1 {
   line-height: 30px;
 }
 
-#next-button {
-  width: 100%;
-  margin-top: 24px;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: #d9829f;
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#next-button:active {
-  opacity: 0.7;
-}
-
 .buttons {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  width: 100%;
-  margin-top: 20px;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  width: 100% !important;
+  margin-top: 20px !important;
 }
 
 .buttons button {
-  flex: 1;
-  width: 50%;
-  height: 48px;
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
+  flex: 1 1 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  height: 48px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: #d9829f !important;
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+}
+
+.buttons button:active {
+  opacity: 0.7;
+}
+
+.main-rank {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 10;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fff;
+  color: #b85c7a;
+  font-size: 15px;
   font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  background: #d9829f;
-  color: #fff;
 }
 
 .main-intro {
@@ -146,19 +149,6 @@ h1 {
   font-size: 16px;
   line-height: 1.8;
   margin-bottom: 20px;
-}
-
-.main-rank {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 10;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: #fff;
-  color: #b85c7a;
-  font-size: 15px;
-  font-weight: bold;
 }
 
 .top-page {
@@ -206,6 +196,12 @@ h1 {
   width: 100%;
 }
 
+/* 希望の配置
+   ⑤ ④ ⑥
+   ② ① ③
+   ⑧ ⑦ ⑨
+*/
+
 .ranking-item {
   position: relative;
   overflow: hidden;
@@ -213,12 +209,6 @@ h1 {
   background: #fff;
   border: 2px solid #f0cbd7;
 }
-
-/* 希望の配置
-   ⑤ ④ ⑥
-   ② ① ③
-   ⑧ ⑦ ⑨
-*/
 
 .ranking-item:nth-child(1) {
   grid-column: 2;
