@@ -50,12 +50,13 @@ h1 {
 }
 
 .member-card img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: center top;
-  background: #fff;
+  display: block !important;
+  width: 100% !important;
+  height: 200px !important;
+  aspect-ratio: auto !important;
+  object-fit: cover !important;
+  object-position: center top !important;
+  background: #fff !important;
 }
 
 .member-name {
