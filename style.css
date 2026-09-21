@@ -169,3 +169,18 @@ h1 {
   font-weight: bold !important;
   border-radius: 10px !important;
 }
+.main-intro {
+  grid-column: 1 / -1 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  text-align: center !important;
+  padding: 40px 20px !important;
+}
+
+.main-intro h2 {
+  text-align: center !important;
+}
+
+.main-intro p {
+  text-align: center !important;
+}
