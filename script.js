@@ -58,8 +58,13 @@ let shuffledMembers = shuffle([...members]);
 let rounds = [];
 let currentRound = 0;
 let selectedMembers = [];
+let selectedPreliminary = [];
 
-// 48人をランダムに並べて、4人ずつ12回に分ける
+let mainRounds = [];
+let mainRound = 0;
+let mainFirst = null;
+let mainSecond = null;
+
 for (let i = 0; i < shuffledMembers.length; i += 4) {
   rounds.push(shuffledMembers.slice(i, i + 4));
 }
@@ -106,18 +111,15 @@ function showRound() {
 function selectMember(id) {
   const index = selectedMembers.indexOf(id);
 
-  // すでに選択されていたら解除
   if (index !== -1) {
     selectedMembers.splice(index, 1);
     updateSelection();
     return;
   }
 
-  // 3人未満なら追加
   if (selectedMembers.length < 3) {
     selectedMembers.push(id);
   } else {
-    // 3人選択済みなら、一番最初に選んだ人と入れ替える
     selectedMembers.shift();
     selectedMembers.push(id);
   }
@@ -136,16 +138,148 @@ function updateSelection() {
   });
 }
 
-nextButton.addEventListener("click", () => {
-  currentRound++;
+function startMainRound() {
+  selectedPreliminary = [];
 
-  if (currentRound >= rounds.length) {
-    alert("予選終了！\n\nここから本選を作ります。");
+  rounds.forEach(round => {
+    round.forEach(member => {
+      if (selectedMembers.includes(member.id)) {
+        selectedPreliminary.push(member);
+      }
+    });
+  });
+
+  // 予選の各ラウンド終了時に選ばれたメンバーを集める
+  if (selectedPreliminary.length === 0) {
+    alert("本選に進むメンバーがいません。");
     return;
   }
 
-  showRound();
+  mainRounds = [];
+
+  const shuffled = shuffle([...selectedPreliminary]);
+
+  for (let i = 0; i < shuffled.length; i += 4) {
+    mainRounds.push(shuffled.slice(i, i + 4));
+  }
+
+  mainRound = 0;
+  showMainRound();
+}
+
+function showMainRound() {
+  const currentMembers = mainRounds[mainRound];
+
+  mainFirst = null;
+  mainSecond = null;
+
+  memberList.innerHTML = "";
+
+  progress.textContent =
+    `本選 ${mainRound + 1} / ${mainRounds.length}`;
+
+  currentMembers.forEach(member => {
+    const card = document.createElement("div");
+
+    card.className = "member-card";
+    card.dataset.id = member.id;
+
+    card.innerHTML = `
+      <img src="${member.image}" alt="${member.name}">
+      <div class="member-name">${member.name}</div>
+      <div class="member-group">${member.group}</div>
+    `;
+
+    card.addEventListener("click", () => {
+      selectMainMember(member.id);
+    });
+
+    memberList.appendChild(card);
+  });
+}
+
+function selectMainMember(id) {
+  if (mainFirst === id) {
+    mainFirst = null;
+  } else if (mainSecond === id) {
+    mainSecond = null;
+  } else if (mainFirst === null) {
+    mainFirst = id;
+  } else if (mainSecond === null) {
+    mainSecond = id;
+  } else {
+    return;
+  }
+
+  document.querySelectorAll(".member-card").forEach(card => {
+    const id = Number(card.dataset.id);
+
+    card.classList.remove("selected", "main-first", "main-second");
+
+    if (id === mainFirst) {
+      card.classList.add("main-first");
+    }
+
+    if (id === mainSecond) {
+      card.classList.add("main-second");
+    }
+  });
+}
+
+nextButton.addEventListener("click", () => {
+
+  // 予選
+  if (currentRound < rounds.length) {
+
+    if (selectedMembers.length === 0) {
+      alert("少なくとも1人選んでください。");
+      return;
+    }
+
+    selectedPreliminary.push(
+      ...rounds[currentRound].filter(member =>
+        selectedMembers.includes(member.id)
+      )
+    );
+
+    currentRound++;
+
+    if (currentRound >= rounds.length) {
+      alert(
+        `予選終了！\n\n${selectedPreliminary.length}人が本選へ進みます。`
+      );
+
+      mainRounds = [];
+
+      const shuffled = shuffle([...selectedPreliminary]);
+
+      for (let i = 0; i < shuffled.length; i += 4) {
+        mainRounds.push(shuffled.slice(i, i + 4));
+      }
+
+      mainRound = 0;
+      showMainRound();
+      return;
+    }
+
+    showRound();
+    return;
+  }
+
+  // 本選
+  if (mainFirst === null || mainSecond === null) {
+    alert("1位と2位をそれぞれ1人ずつ選んでください。");
+    return;
+  }
+
+  mainRound++;
+
+  if (mainRound >= mainRounds.length) {
+    alert("本選終了！\n\n次は決勝戦です。");
+    return;
+  }
+
+  showMainRound();
 });
 
-// 最初の画面を表示
 showRound();
