@@ -266,47 +266,68 @@ h1 {
 .start-button:active {
   opacity: 0.7;
 }
+
+/* 結果画面：3×3配置 */
+#member-list:has(.ranking-list) {
+  display: block !important;
+}
+
+#member-list .ranking-list {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-rows: repeat(3, auto) !important;
+  gap: 10px !important;
+  width: 100% !important;
+}
+
+#member-list .ranking-item {
+  display: block !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 #member-list .ranking-item:nth-child(1) {
-  grid-column: 2;
-  grid-row: 2;
+  grid-column: 2 !important;
+  grid-row: 2 !important;
 }
 
 #member-list .ranking-item:nth-child(2) {
-  grid-column: 1;
-  grid-row: 2;
+  grid-column: 1 !important;
+  grid-row: 2 !important;
 }
 
 #member-list .ranking-item:nth-child(3) {
-  grid-column: 3;
-  grid-row: 2;
+  grid-column: 3 !important;
+  grid-row: 2 !important;
 }
 
 #member-list .ranking-item:nth-child(4) {
-  grid-column: 2;
-  grid-row: 1;
+  grid-column: 2 !important;
+  grid-row: 1 !important;
 }
 
 #member-list .ranking-item:nth-child(5) {
-  grid-column: 1;
-  grid-row: 1;
+  grid-column: 1 !important;
+  grid-row: 1 !important;
 }
 
 #member-list .ranking-item:nth-child(6) {
-  grid-column: 3;
-  grid-row: 1;
+  grid-column: 3 !important;
+  grid-row: 1 !important;
 }
 
 #member-list .ranking-item:nth-child(7) {
-  grid-column: 2;
-  grid-row: 3;
+  grid-column: 2 !important;
+  grid-row: 3 !important;
 }
 
 #member-list .ranking-item:nth-child(8) {
-  grid-column: 1;
-  grid-row: 3;
+  grid-column: 1 !important;
+  grid-row: 3 !important;
 }
 
 #member-list .ranking-item:nth-child(9) {
-  grid-column: 3;
-  grid-row: 3;
+  grid-column: 3 !important;
+  grid-row: 3 !important;
 }
