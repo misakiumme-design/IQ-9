@@ -68,8 +68,15 @@ let mainRound = 0;
 
 let mainFirst = null;
 let mainSecond = null;
+let mainWinners = [];
+
+let finalCandidates = [];
+let finalPairs = [];
+let finalPairIndex = 0;
+let finalWins = {};
 
 let phase = "preliminary";
+
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -80,9 +87,11 @@ function shuffle(array) {
   return array;
 }
 
+
 for (let i = 0; i < shuffledMembers.length; i += 4) {
   rounds.push(shuffledMembers.slice(i, i + 4));
 }
+
 
 function showRound() {
   phase = "preliminary";
@@ -111,13 +120,14 @@ function showRound() {
       <div class="member-group">${member.group}</div>
     `;
 
-    card.addEventListener("click", () => {
+    card.onclick = function() {
       selectMember(member.id);
-    });
+    };
 
     memberList.appendChild(card);
   });
 }
+
 
 function selectMember(id) {
   const index = selectedMembers.indexOf(id);
@@ -135,6 +145,7 @@ function selectMember(id) {
   updateSelection();
 }
 
+
 function updateSelection() {
   document.querySelectorAll(".member-card").forEach(card => {
     const id = Number(card.dataset.id);
@@ -146,19 +157,52 @@ function updateSelection() {
   });
 }
 
+
 function startMain() {
-  const shuffled = shuffle([...preliminaryWinners]);
+  const count = preliminaryWinners.length;
+
+  let mainRoundCount = Math.ceil(count / 2);
+
+  if (mainRoundCount < 12) {
+    mainRoundCount = 12;
+  }
+
+  if (mainRoundCount > 20) {
+    mainRoundCount = 20;
+  }
 
   mainRounds = [];
 
-  for (let i = 0; i < shuffled.length; i += 4) {
-    mainRounds.push(shuffled.slice(i, i + 4));
+  const pool = [...preliminaryWinners];
+
+  for (let i = 0; i < mainRoundCount; i++) {
+
+    let available = [...pool];
+
+    if (i > 0 && mainRounds[i - 1]) {
+      const previousIds =
+        mainRounds[i - 1].map(member => member.id);
+
+      available = available.filter(
+        member => !previousIds.includes(member.id)
+      );
+    }
+
+    if (available.length < 4) {
+      available = [...pool];
+    }
+
+    const group = shuffle([...available]).slice(0, 4);
+
+    mainRounds.push(group);
   }
 
   mainRound = 0;
+  mainWinners = [];
 
   showMainIntro();
 }
+
 
 function showMainIntro() {
   phase = "mainIntro";
@@ -177,10 +221,12 @@ function showMainIntro() {
     <h2>本選</h2>
     <p>予選を勝ち抜いたメンバーで本選を行います。</p>
     <p>4人の中から1位と2位を選んでください。</p>
+    <p><strong>全 ${mainRounds.length} ラウンド</strong></p>
   `;
 
   memberList.appendChild(intro);
 }
+
 
 function showMainRound() {
   phase = "main";
@@ -218,6 +264,7 @@ function showMainRound() {
   });
 }
 
+
 function selectMainMember(id) {
 
   if (mainFirst === id) {
@@ -232,6 +279,7 @@ function selectMainMember(id) {
 
   updateMainSelection();
 }
+
 
 function updateMainSelection() {
 
@@ -276,10 +324,172 @@ function updateMainSelection() {
   });
 }
 
+
+function startFinal() {
+
+  const unique = [];
+
+  mainWinners.forEach(member => {
+    if (!unique.some(existing => existing.id === member.id)) {
+      unique.push(member);
+    }
+  });
+
+  finalCandidates = unique;
+
+  finalWins = {};
+
+  finalCandidates.forEach(member => {
+    finalWins[member.id] = 0;
+  });
+
+  finalPairs = [];
+
+  for (let i = 0; i < finalCandidates.length; i++) {
+    for (let j = i + 1; j < finalCandidates.length; j++) {
+
+      finalPairs.push([
+        finalCandidates[i],
+        finalCandidates[j]
+      ]);
+    }
+  }
+
+  finalPairs = shuffle(finalPairs);
+
+  finalPairIndex = 0;
+
+  showFinalIntro();
+}
+
+
+function showFinalIntro() {
+  phase = "finalIntro";
+
+  memberList.innerHTML = "";
+
+  progress.textContent = "決勝";
+
+  instruction.textContent = "";
+
+  const intro = document.createElement("div");
+
+  intro.className = "main-intro";
+
+  intro.innerHTML = `
+    <h2>決勝</h2>
+    <p>ここからは二者択一です。</p>
+    <p>2人のうち、より好きな顔を1人選んでください。</p>
+    <p><strong>${finalCandidates.length}人・全${finalPairs.length}対戦</strong></p>
+  `;
+
+  memberList.appendChild(intro);
+}
+
+
+function showFinalPair() {
+
+  phase = "final";
+
+  const pair = finalPairs[finalPairIndex];
+
+  memberList.innerHTML = "";
+
+  progress.textContent =
+    `決勝 ${finalPairIndex + 1} / ${finalPairs.length}`;
+
+  instruction.textContent =
+    "より好きな顔を1人選んでください";
+
+  pair.forEach(member => {
+
+    const card = document.createElement("div");
+
+    card.className = "member-card final-card";
+    card.dataset.id = member.id;
+
+    card.innerHTML = `
+      <img src="${member.image}" alt="${member.name}">
+      <div class="member-name">${member.name}</div>
+      <div class="member-group">${member.group}</div>
+    `;
+
+    card.onclick = function() {
+      selectFinalWinner(member.id);
+    };
+
+    memberList.appendChild(card);
+  });
+}
+
+
+function selectFinalWinner(id) {
+
+  finalWins[id]++;
+
+  finalPairIndex++;
+
+  if (finalPairIndex >= finalPairs.length) {
+    showFinalRanking();
+    return;
+  }
+
+  showFinalPair();
+}
+
+
+function showFinalRanking() {
+
+  phase = "result";
+
+  memberList.innerHTML = "";
+
+  progress.textContent = "好き顔9";
+
+  instruction.textContent =
+    "あなたの好き顔ランキング TOP9";
+
+  const ranking = [...finalCandidates].sort(
+    (a, b) => finalWins[b.id] - finalWins[a.id]
+  );
+
+  const result = document.createElement("div");
+
+  result.className = "ranking-list";
+
+  ranking.slice(0, 9).forEach((member, index) => {
+
+    const item = document.createElement("div");
+
+    item.className = "ranking-item";
+
+    item.innerHTML = `
+      <div class="ranking-number">${index + 1}位</div>
+      <img src="${member.image}" alt="${member.name}">
+      <div class="ranking-name">${member.name}</div>
+      <div class="ranking-group">${member.group}</div>
+      <div class="ranking-wins">${finalWins[member.id]}勝</div>
+    `;
+
+    result.appendChild(item);
+  });
+
+  memberList.appendChild(result);
+
+  nextButton.style.display = "none";
+  backButton.style.display = "none";
+}
+
+
 nextButton.addEventListener("click", () => {
 
   if (phase === "mainIntro") {
     showMainRound();
+    return;
+  }
+
+  if (phase === "finalIntro") {
+    showFinalPair();
     return;
   }
 
@@ -296,32 +506,65 @@ nextButton.addEventListener("click", () => {
     currentRound++;
 
     if (currentRound >= rounds.length) {
+
       alert("予選終了！\n\nこの後、本選に進みます。");
+
       startMain();
+
       return;
     }
 
     showRound();
+
     return;
   }
 
   if (phase === "main") {
 
     if (mainFirst === null || mainSecond === null) {
-      alert("1位と2位をそれぞれ1人ずつ選んでください。");
+
+      alert(
+        "1位と2位をそれぞれ1人ずつ選んでください。"
+      );
+
       return;
+    }
+
+    const currentMembers = mainRounds[mainRound];
+
+    const first = currentMembers.find(
+      member => member.id === mainFirst
+    );
+
+    const second = currentMembers.find(
+      member => member.id === mainSecond
+    );
+
+    if (first) {
+      mainWinners.push(first);
+    }
+
+    if (second) {
+      mainWinners.push(second);
     }
 
     mainRound++;
 
     if (mainRound >= mainRounds.length) {
-      alert("本選終了！");
+
+      alert("本選終了！\n\nこの後、決勝に進みます。");
+
+      startFinal();
+
       return;
     }
 
     showMainRound();
+
+    return;
   }
 });
+
 
 backButton.addEventListener("click", () => {
 
@@ -340,7 +583,9 @@ backButton.addEventListener("click", () => {
     currentRound--;
 
     const previousRound = rounds[currentRound];
-    const previousIds = previousRound.map(member => member.id);
+
+    const previousIds =
+      previousRound.map(member => member.id);
 
     preliminaryWinners =
       preliminaryWinners.filter(member =>
@@ -348,6 +593,7 @@ backButton.addEventListener("click", () => {
       );
 
     showRound();
+
     return;
   }
 
@@ -361,7 +607,10 @@ backButton.addEventListener("click", () => {
     mainRound--;
 
     showMainRound();
+
+    return;
   }
 });
+
 
 showRound();
