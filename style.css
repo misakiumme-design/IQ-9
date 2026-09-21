@@ -118,3 +118,35 @@ h1 {
 .member-card img {
   background: #fff !important;
 }
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.buttons button {
+  flex: 1;
+  padding: 12px 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.main-intro {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.main-intro h2 {
+  font-size: 28px;
+  margin-bottom: 25px;
+}
+
+.main-intro p {
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
