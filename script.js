@@ -106,43 +106,25 @@ function showTopPage() {
 
   page.innerHTML = `
     <h2>IQP好き顔9</h2>
-    <p>あなたの好きな「顔」を9人選ぼう。</p>
+    <p>あなたの好きな「顔」を9人選ぼう</p>
     <p>概ねIQPオフィシャルHP引用(ご都合メンバー有)</p>
+
+    <p>
+      まずは予選からスタートします。<br>
+      4人ずつ表示される中から<br>
+      好きな顔を最大3人選んでください
+    </p>
+
     <button class="start-button" id="start-button">スタート</button>
   `;
 
   memberList.appendChild(page);
 
   document.getElementById("start-button").onclick = function() {
-    showStartPage();
-  };
-}
-
-function showStartPage() {
-  phase = "start";
-
-  memberList.innerHTML = "";
-  progress.textContent = "";
-  instruction.textContent = "";
-
-  const page = document.createElement("div");
-  page.className = "start-page";
-
-  page.innerHTML = `
-    <h2>準備はOK？</h2>
-    <p>
-      まずは予選からスタートします。<br>
-      4人ずつ表示される中から<br>
-      好きな顔を最大3人選んでください。
-    </p>
-    <button class="start-button" id="begin-button">予選を始める</button>
-  `;
-
-  memberList.appendChild(page);
-
-  document.getElementById("begin-button").onclick = function() {
     nextButton.style.display = "";
     backButton.style.display = "";
+    currentRound = 0;
+    preliminaryWinners = [];
     showRound();
   };
 }
