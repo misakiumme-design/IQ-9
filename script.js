@@ -1,242 +1,341 @@
-* {
-  box-sizing: border-box;
-}
+const members = [
+  { id: 1, name: "AIKA", group: "MAGICAL SPEC", image: "images/AIKA.JPG" },
+  { id: 2, name: "ANNA", group: "MAGICAL SPEC", image: "images/ANNA.JPG" },
+  { id: 3, name: "AYA", group: "MAGICAL SPEC", image: "images/AYA.JPG" },
+  { id: 4, name: "KOTONE(岩本琴音)", group: "MAGICAL SPEC/トキヲイキル", image: "images/KOTONE(岩本琴音).JPG" },
+  { id: 5, name: "MEI", group: "MAGICAL SPEC/トキヲイキル", image: "images/MEI.JPG" },
+  { id: 6, name: "RINKA", group: "MAGICAL SPEC", image: "images/RINKA.JPG" },
+  { id: 7, name: "SHIKI", group: "MAGICAL SPEC", image: "images/SHIKI.JPG" },
+  { id: 8, name: "YUYU", group: "MAGICAL SPEC", image: "images/YUYU.JPG" },
+  { id: 9, name: "一条虹花", group: "IQP研究生", image: "images/一条虹花.JPG" },
+  { id: 10, name: "七瀬りあ", group: "IQP研究生", image: "images/七瀬りあ.JPG" },
+  { id: 11, name: "伊藤麻希", group: "トキヲイキル", image: "images/itomaki.jpg" },
+  { id: 12, name: "優希", group: "HelloYouth", image: "images/優希.JPG" },
+  { id: 13, name: "原直子", group: "トキヲイキル", image: "images/原直子.JPG" },
+  { id: 14, name: "大島向葵", group: "HelloYouth", image: "images/大島向葵.JPG" },
+  { id: 15, name: "大庭彩歌", group: "トキヲイキル", image: "images/obaayaka.jpg" },
+  { id: 16, name: "大石芽依", group: "トキヲイキル(サポメン)", image: "images/大石芽依.JPG" },
+  { id: 17, name: "大葉みらい", group: "HelloYouth", image: "images/大葉みらい.JPG" },
+  { id: 18, name: "天瀬かな", group: "トキヲイキル(サポメン)", image: "images/天瀬かな.JPG" },
+  { id: 19, name: "天野なつ", group: "個人", image: "images/天野なつ.JPG" },
+  { id: 20, name: "宇咲妃奈乃", group: "HelloYouth", image: "images/宇咲妃奈乃.JPG" },
+  { id: 21, name: "宮岡ゆあ", group: "IQP研究生", image: "images/宮岡ゆあ.JPG" },
+  { id: 22, name: "岸田麻佑", group: "トキヲイキル", image: "images/岸田麻佑.JPG" },
+  { id: 23, name: "平松聖菜", group: "HelloYouth", image: "images/平松聖菜.JPG" },
+  { id: 24, name: "平野未季", group: "HelloYouth", image: "images/平野未季.JPG" },
+  { id: 25, name: "愛実にこ", group: "IQP研究生", image: "images/愛実にこ.JPG" },
+  { id: 26, name: "星乃未來", group: "IQP研究生", image: "images/星乃未來.JPG" },
+  { id: 27, name: "月野杏咲", group: "IQP研究生", image: "images/月野杏咲.JPG" },
+  { id: 28, name: "有村南海", group: "LinQ", image: "images/有村南海.JPG" },
+  { id: 29, name: "有栖みこ", group: "IQP研究生", image: "images/有栖みこ.JPG" },
+  { id: 30, name: "望月雫汐", group: "IQP研究生", image: "images/望月雫汐.JPG" },
+  { id: 31, name: "松岡由莉", group: "IQP研究生", image: "images/松岡由莉.JPG" },
+  { id: 32, name: "桃咲まゆ", group: "トキヲイキル", image: "images/桃咲まゆ.JPG" },
+  { id: 33, name: "森斗咲羽", group: "LinQ", image: "images/森斗咲羽.JPG" },
+  { id: 34, name: "槙宮令乃", group: "HelloYouth", image: "images/槙宮令乃.JPG" },
+  { id: 35, name: "橘杏來", group: "LinQ", image: "images/橘杏來.JPG" },
+  { id: 36, name: "櫻井かのん", group: "HelloYouth", image: "images/櫻井かのん.JPG" },
+  { id: 37, name: "海月らな", group: "LinQ", image: "images/海月らな.JPG" },
+  { id: 38, name: "海月らん", group: "HelloYouth", image: "images/海月らん.JPG" },
+  { id: 39, name: "深瀬智聖", group: "トキヲイキル(サポメン)他", image: "images/深瀬智聖.JPG" },
+  { id: 40, name: "綾乃鈴", group: "IQP研究生", image: "images/綾乃鈴.JPG" },
+  { id: 41, name: "織多莉鈴", group: "LinQ", image: "images/織多莉鈴.JPG" },
+  { id: 42, name: "花咲奈々未", group: "IQP研究生", image: "images/花咲奈々未.JPG" },
+  { id: 43, name: "華山あかり", group: "LinQ", image: "images/華山あかり.JPG" },
+  { id: 44, name: "葉月陽愛", group: "IQP研究生", image: "images/葉月陽愛.JPG" },
+  { id: 45, name: "藤咲まりな", group: "トキヲイキル(サポメン)", image: "images/藤咲まりな.JPG" },
+  { id: 46, name: "雪まい", group: "IQP研究生", image: "images/雪まい.JPG" },
+  { id: 47, name: "黒田さい", group: "IQP研究生", image: "images/黒田さい.JPG" },
+  { id: 48, name: "黒田れい", group: "LinQ", image: "images/黒田れい.JPG" }
+];
 
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-  background: #f7f7f7;
-  color: #333;
-}
+const memberList = document.getElementById("member-list");
+const nextButton = document.getElementById("next-button");
+const backButton = document.getElementById("back-button");
+const progress = document.getElementById("progress");
+const instruction = document.querySelector(".instruction");
 
-.container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 24px 16px 40px;
-  text-align: center;
-}
+let rounds = [];
+let currentRound = 0;
 
-h1 {
-  margin: 10px 0 8px;
-  font-size: 28px;
-}
+let selectedMembers = [];
+let preliminaryWinners = [];
 
-#progress {
-  margin: 0 0 18px;
-  color: #777;
-  font-size: 14px;
-}
+let mainRounds = [];
+let mainRound = 0;
 
-.instruction {
-  margin: 0 0 20px;
-  font-size: 15px;
-  line-height: 1.6;
-}
+let mainFirst = null;
+let mainSecond = null;
+let mainScores = {};
 
-.member-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
-}
+let finalCandidates = [];
+let finalPairs = [];
+let finalPairIndex = 0;
+let finalWins = {};
 
-.member-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  background: transparent;
-  border: 3px solid transparent;
-  cursor: pointer;
-}
+let phase = "preliminary";
 
-.member-card img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  object-fit: cover;
-  object-position: center top;
-  background: #fff;
-}
 
-.member-name {
-  padding: 8px 4px 2px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-.member-group {
-  padding: 0 4px 8px;
-  font-size: 11px;
-  color: #777;
-}
-
-.member-card.selected {
-  border-color: #333;
-}
-
-.member-card.selected::after {
-  content: "✓";
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #333;
-  color: #fff;
-  font-size: 20px;
-  line-height: 30px;
-}
-
-#next-button {
-  width: 100%;
-  margin-top: 24px;
-  padding: 14px;
-  border: none;
-  border-radius: 10px;
-  background: #333;
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-#next-button:active {
-  opacity: 0.7;
-}
-
-@media (min-width: 500px) {
-  .member-grid {
-    grid-template-columns: repeat(4, 1fr);
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }
 
-.member-card {
-  background: #fff !important;
+
+/* =========================
+   予選
+========================= */
+
+const shuffledMembers = shuffle([...members]);
+
+for (let i = 0; i < shuffledMembers.length; i += 4) {
+  rounds.push(shuffledMembers.slice(i, i + 4));
 }
 
-.member-card img {
-  background: #fff !important;
+
+function showRound() {
+
+  phase = "preliminary";
+
+  selectedMembers = [];
+
+  memberList.innerHTML = "";
+
+  progress.textContent =
+    `予選 ${currentRound + 1} / ${rounds.length}`;
+
+  instruction.textContent =
+    "この中から好きな顔を最大3人選んでください";
+
+  rounds[currentRound].forEach(member => {
+
+    const card = document.createElement("div");
+
+    card.className = "member-card";
+    card.dataset.id = member.id;
+
+    card.innerHTML = `
+      <img src="${member.image}" alt="${member.name}">
+      <div class="member-name">${member.name}</div>
+      <div class="member-group">${member.group}</div>
+    `;
+
+    card.onclick = () => selectMember(member.id);
+
+    memberList.appendChild(card);
+  });
 }
 
-.buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 20px;
+
+function selectMember(id) {
+
+  const index = selectedMembers.indexOf(id);
+
+  if (index !== -1) {
+
+    selectedMembers.splice(index, 1);
+
+  } else {
+
+    if (selectedMembers.length >= 3) {
+      selectedMembers.shift();
+    }
+
+    selectedMembers.push(id);
+  }
+
+  updateSelection();
 }
 
-.buttons button {
-  flex: 1;
-  padding: 12px 10px;
-  font-size: 16px;
-  font-weight: bold;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+
+function updateSelection() {
+
+  document.querySelectorAll(".member-card").forEach(card => {
+
+    const id = Number(card.dataset.id);
+
+    card.classList.toggle(
+      "selected",
+      selectedMembers.includes(id)
+    );
+  });
 }
 
-.main-intro {
-  text-align: center;
-  padding: 40px 20px;
+
+/* =========================
+   本選
+========================= */
+
+function startMain() {
+
+  /*
+   * 予選通過者だけを本選の候補にする
+   */
+  const pool = [];
+
+  preliminaryWinners.forEach(member => {
+
+    if (!pool.some(m => m.id === member.id)) {
+      pool.push(member);
+    }
+  });
+
+
+  /*
+   * 本選は15ラウンド固定
+   */
+  mainRounds = [];
+
+  for (let i = 0; i < 15; i++) {
+
+    /*
+     * 毎回、予選通過者の中から
+     * ランダムに4人選ぶ
+     */
+    const group = shuffle([...pool]).slice(0, 4);
+
+    mainRounds.push(group);
+  }
+
+
+  /*
+   * 本選で選ばれた回数
+   */
+  mainScores = {};
+
+  pool.forEach(member => {
+    mainScores[member.id] = 0;
+  });
+
+  mainRound = 0;
+
+  showMainIntro();
 }
 
-.main-intro h2 {
-  font-size: 28px;
-  margin-bottom: 25px;
+
+function showMainIntro() {
+
+  phase = "mainIntro";
+
+  memberList.innerHTML = "";
+
+  progress.textContent = "本選";
+
+  instruction.textContent = "";
+
+  const intro = document.createElement("div");
+
+  intro.className = "main-intro";
+
+  intro.innerHTML = `
+    <h2>本選</h2>
+    <p>予選を勝ち抜いたメンバーで本選を行います。</p>
+    <p>4人の中から1位と2位を選んでください。</p>
+    <p><strong>全15ラウンド</strong></p>
+  `;
+
+  memberList.appendChild(intro);
 }
 
-.main-intro p {
-  font-size: 16px;
-  line-height: 1.8;
-  margin-bottom: 20px;
-}
-.buttons {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 10px !important;
-  width: 100% !important;
-  margin-top: 20px !important;
+
+function showMainRound() {
+
+  phase = "main";
+
+  mainFirst = null;
+  mainSecond = null;
+
+  memberList.innerHTML = "";
+
+  progress.textContent =
+    `本選 ${mainRound + 1} / 15`;
+
+  instruction.textContent =
+    "1位と2位をそれぞれ1人ずつ選んでください";
+
+  mainRounds[mainRound].forEach(member => {
+
+    const card = document.createElement("div");
+
+    card.className = "member-card";
+
+    card.dataset.id = member.id;
+
+    card.innerHTML = `
+      <img src="${member.image}" alt="${member.name}">
+      <div class="member-name">${member.name}</div>
+      <div class="member-group">${member.group}</div>
+    `;
+
+    card.onclick = () => {
+      selectMainMember(member.id);
+    };
+
+    memberList.appendChild(card);
+  });
 }
 
-.buttons button {
-  box-sizing: border-box !important;
-  flex: 1 1 0 !important;
-  width: 50% !important;
-  height: 48px !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  font-size: 16px !important;
-  font-weight: bold !important;
-  border-radius: 10px !important;
-}
-.main-intro {
-  grid-column: 1 / -1 !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  text-align: center !important;
-  padding: 40px 20px !important;
+
+function selectMainMember(id) {
+
+  if (mainFirst === id) {
+
+    mainFirst = null;
+
+  } else if (mainSecond === id) {
+
+    mainSecond = null;
+
+  } else if (mainFirst === null) {
+
+    mainFirst = id;
+
+  } else if (mainSecond === null) {
+
+    mainSecond = id;
+  }
+
+  updateMainSelection();
 }
 
-.main-intro h2 {
-  text-align: center !important;
-}
 
-.main-intro p {
-  text-align: center !important;
-}
+function updateMainSelection() {
 
-.main-rank {
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  z-index: 10;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: #fff;
-  color: #000;
-  font-size: 15px;
-  font-weight: bold;
-}
-.ranking-list {
-  grid-column: 1 / -1;
-  width: 100%;
-}
+  document.querySelectorAll(".member-card").forEach(card => {
 
-.ranking-item {
-  position: relative;
-  display: grid;
-  grid-template-columns: 55px 90px 1fr auto;
-  align-items: center;
-  gap: 12px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background: #fff;
-}
+    const id = Number(card.dataset.id);
 
-.ranking-item img {
-  width: 90px;
-  height: 90px;
-  object-fit: cover;
-  object-position: center top;
-  border-radius: 8px;
-}
+    card.classList.remove(
+      "main-first",
+      "main-second"
+    );
 
-.ranking-number {
-  font-size: 18px;
-  font-weight: bold;
-}
+    const oldRank = card.querySelector(".main-rank");
 
-.ranking-name {
-  font-weight: bold;
-}
+    if (oldRank) {
+      oldRank.remove();
+    }
 
-.ranking-group {
-  font-size: 11px;
-  color: #777;
-}
 
-.ranking-wins {
-  font-weight: bold;
-}
+    if (id === mainFirst) {
+
+      card.classList.add("main-first");
+
+      const rank = document.createElement("div");
+
+      rank.className = "main-rank";
+
+      rank.textContent = "1位";
+
+      card.prepend(rank);
+    }
+
+
+    if (id === mainSecond) {
+
+      card.classList.add("main-second");
+
+      const rank = document.createElement("div");
