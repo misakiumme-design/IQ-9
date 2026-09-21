@@ -44,7 +44,7 @@ h1 {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
-  background: #fff;
+  background: transparent;
   border: 3px solid transparent;
   cursor: pointer;
 }
