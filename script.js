@@ -52,22 +52,28 @@ const members = [
 
 const memberList = document.getElementById("member-list");
 const nextButton = document.getElementById("next-button");
+const backButton = document.getElementById("back-button");
 const progress = document.getElementById("progress");
 
 let shuffledMembers = shuffle([...members]);
+
 let rounds = [];
 let currentRound = 0;
+
 let selectedMembers = [];
-let selectedPreliminary = [];
+let preliminaryWinners = [];
 
 let mainRounds = [];
 let mainRound = 0;
+
 let mainFirst = null;
 let mainSecond = null;
 
-for (let i = 0; i < shuffledMembers.length; i += 4) {
-  rounds.push(shuffledMembers.slice(i, i + 4));
-}
+let phase = "preliminary";
+
+// --------------------
+// ランダム並び
+// --------------------
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -78,7 +84,21 @@ function shuffle(array) {
   return array;
 }
 
+// --------------------
+// 予選の組を作る
+// --------------------
+
+for (let i = 0; i < shuffledMembers.length; i += 4) {
+  rounds.push(shuffledMembers.slice(i, i + 4));
+}
+
+// --------------------
+// 予選表示
+// --------------------
+
 function showRound() {
+  phase = "preliminary";
+
   const currentMembers = rounds[currentRound];
 
   selectedMembers = [];
@@ -89,6 +109,7 @@ function showRound() {
     `予選 ${currentRound + 1} / ${rounds.length}`;
 
   currentMembers.forEach(member => {
+
     const card = document.createElement("div");
 
     card.className = "member-card";
@@ -108,7 +129,12 @@ function showRound() {
   });
 }
 
+// --------------------
+// 予選の選択
+// --------------------
+
 function selectMember(id) {
+
   const index = selectedMembers.indexOf(id);
 
   if (index !== -1) {
@@ -127,47 +153,51 @@ function selectMember(id) {
   updateSelection();
 }
 
+// --------------------
+// 予選の選択表示
+// --------------------
+
 function updateSelection() {
+
   document.querySelectorAll(".member-card").forEach(card => {
+
     const id = Number(card.dataset.id);
 
     card.classList.toggle(
       "selected",
       selectedMembers.includes(id)
     );
+
   });
 }
 
-function startMainRound() {
-  selectedPreliminary = [];
+// --------------------
+// 本選開始
+// --------------------
 
-  rounds.forEach(round => {
-    round.forEach(member => {
-      if (selectedMembers.includes(member.id)) {
-        selectedPreliminary.push(member);
-      }
-    });
-  });
+function startMain() {
 
-  // 予選の各ラウンド終了時に選ばれたメンバーを集める
-  if (selectedPreliminary.length === 0) {
-    alert("本選に進むメンバーがいません。");
-    return;
-  }
+  const shuffled = shuffle([...preliminaryWinners]);
 
   mainRounds = [];
-
-  const shuffled = shuffle([...selectedPreliminary]);
 
   for (let i = 0; i < shuffled.length; i += 4) {
     mainRounds.push(shuffled.slice(i, i + 4));
   }
 
   mainRound = 0;
+
   showMainRound();
 }
 
+// --------------------
+// 本選表示
+// --------------------
+
 function showMainRound() {
+
+  phase = "main";
+
   const currentMembers = mainRounds[mainRound];
 
   mainFirst = null;
@@ -179,6 +209,7 @@ function showMainRound() {
     `本選 ${mainRound + 1} / ${mainRounds.length}`;
 
   currentMembers.forEach(member => {
+
     const card = document.createElement("div");
 
     card.className = "member-card";
@@ -198,7 +229,12 @@ function showMainRound() {
   });
 }
 
+// --------------------
+// 本選の1位・2位選択
+// --------------------
+
 function selectMainMember(id) {
+
   if (mainFirst === id) {
     mainFirst = null;
   } else if (mainSecond === id) {
@@ -211,10 +247,24 @@ function selectMainMember(id) {
     return;
   }
 
+  updateMainSelection();
+}
+
+// --------------------
+// 本選の選択表示
+// --------------------
+
+function updateMainSelection() {
+
   document.querySelectorAll(".member-card").forEach(card => {
+
     const id = Number(card.dataset.id);
 
-    card.classList.remove("selected", "main-first", "main-second");
+    card.classList.remove(
+      "selected",
+      "main-first",
+      "main-second"
+    );
 
     if (id === mainFirst) {
       card.classList.add("main-first");
@@ -223,63 +273,121 @@ function selectMainMember(id) {
     if (id === mainSecond) {
       card.classList.add("main-second");
     }
+
   });
 }
 
+// --------------------
+// 次へ
+// --------------------
+
 nextButton.addEventListener("click", () => {
 
+  // ====================
   // 予選
-  if (currentRound < rounds.length) {
+  // ====================
+
+  if (phase === "preliminary") {
 
     if (selectedMembers.length === 0) {
       alert("少なくとも1人選んでください。");
       return;
     }
 
-    selectedPreliminary.push(
-      ...rounds[currentRound].filter(member =>
-        selectedMembers.includes(member.id)
-      )
+    const currentMembers = rounds[currentRound];
+
+    const winners = currentMembers.filter(member =>
+      selectedMembers.includes(member.id)
     );
+
+    preliminaryWinners.push(...winners);
 
     currentRound++;
 
     if (currentRound >= rounds.length) {
-      alert(
-        `予選終了！\n\n${selectedPreliminary.length}人が本選へ進みます。`
-      );
 
-      mainRounds = [];
+      startMain();
 
-      const shuffled = shuffle([...selectedPreliminary]);
-
-      for (let i = 0; i < shuffled.length; i += 4) {
-        mainRounds.push(shuffled.slice(i, i + 4));
-      }
-
-      mainRound = 0;
-      showMainRound();
       return;
     }
 
     showRound();
+
     return;
   }
 
+  // ====================
   // 本選
-  if (mainFirst === null || mainSecond === null) {
-    alert("1位と2位をそれぞれ1人ずつ選んでください。");
-    return;
+  // ====================
+
+  if (phase === "main") {
+
+    if (mainFirst === null || mainSecond === null) {
+      alert("1位と2位をそれぞれ1人ずつ選んでください。");
+      return;
+    }
+
+    mainRound++;
+
+    if (mainRound >= mainRounds.length) {
+
+      alert("本選終了！");
+
+      return;
+    }
+
+    showMainRound();
   }
 
-  mainRound++;
-
-  if (mainRound >= mainRounds.length) {
-    alert("本選終了！\n\n次は決勝戦です。");
-    return;
-  }
-
-  showMainRound();
 });
+
+// --------------------
+// ひとつ戻る
+// --------------------
+
+backButton.addEventListener("click", () => {
+
+  // 予選中
+  if (phase === "preliminary") {
+
+    if (currentRound <= 0) {
+      return;
+    }
+
+    currentRound--;
+
+    // 前の組で選んだ人を予選通過者から削除
+    const previousRound = rounds[currentRound];
+
+    const previousIds = previousRound.map(member => member.id);
+
+    preliminaryWinners =
+      preliminaryWinners.filter(member =>
+        !previousIds.includes(member.id)
+      );
+
+    showRound();
+
+    return;
+  }
+
+  // 本選中
+  if (phase === "main") {
+
+    if (mainRound <= 0) {
+      return;
+    }
+
+    mainRound--;
+
+    showMainRound();
+
+  }
+
+});
+
+// --------------------
+// 最初の画面
+// --------------------
 
 showRound();
