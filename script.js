@@ -73,7 +73,9 @@ let finalPairs = [];
 let finalPairIndex = 0;
 let finalWins = {};
 
-let phase = "preliminary";
+let phase = "top";
+
+const FINAL_MATCHES = 24;
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -89,6 +91,61 @@ for (let i = 0; i < shuffledMembers.length; i += 4) {
   rounds.push(shuffledMembers.slice(i, i + 4));
 }
 
+function showTopPage() {
+  phase = "top";
+
+  memberList.innerHTML = "";
+  progress.textContent = "";
+  instruction.textContent = "";
+
+  nextButton.style.display = "none";
+  backButton.style.display = "none";
+
+  const page = document.createElement("div");
+  page.className = "top-page";
+
+  page.innerHTML = `
+    <h2>好き顔9</h2>
+    <p>あなたの「好きな顔」を9人選ぼう。</p>
+    <button class="start-button" id="start-button">スタート</button>
+  `;
+
+  memberList.appendChild(page);
+
+  document.getElementById("start-button").onclick = function() {
+    showStartPage();
+  };
+}
+
+function showStartPage() {
+  phase = "start";
+
+  memberList.innerHTML = "";
+  progress.textContent = "";
+  instruction.textContent = "";
+
+  const page = document.createElement("div");
+  page.className = "start-page";
+
+  page.innerHTML = `
+    <h2>準備はOK？</h2>
+    <p>
+      まずは予選からスタートします。<br>
+      4人ずつ表示される中から<br>
+      好きな顔を最大3人選んでください。
+    </p>
+    <button class="start-button" id="begin-button">予選を始める</button>
+  `;
+
+  memberList.appendChild(page);
+
+  document.getElementById("begin-button").onclick = function() {
+    nextButton.style.display = "";
+    backButton.style.display = "";
+    showRound();
+  };
+}
+
 function showRound() {
   phase = "preliminary";
   selectedMembers = [];
@@ -100,6 +157,9 @@ function showRound() {
 
   instruction.textContent =
     "この中から好きな顔を最大3人選んでください";
+
+  nextButton.style.display = "";
+  backButton.style.display = "";
 
   rounds[currentRound].forEach(member => {
     const card = document.createElement("div");
@@ -157,6 +217,11 @@ function startMain() {
     }
   });
 
+  if (pool.length < 4) {
+    alert("予選通過者が4人未満のため、本選を開始できません。");
+    return;
+  }
+
   mainRounds = [];
 
   for (let i = 0; i < 15; i++) {
@@ -181,8 +246,10 @@ function showMainIntro() {
   memberList.innerHTML = "";
 
   progress.textContent = "本選";
-
   instruction.textContent = "";
+
+  nextButton.style.display = "";
+  backButton.style.display = "";
 
   const intro = document.createElement("div");
 
@@ -211,6 +278,9 @@ function showMainRound() {
 
   instruction.textContent =
     "1位と2位をそれぞれ1人ずつ選んでください";
+
+  nextButton.style.display = "";
+  backButton.style.display = "";
 
   mainRounds[mainRound].forEach(member => {
     const card = document.createElement("div");
@@ -250,10 +320,7 @@ function updateMainSelection() {
   document.querySelectorAll(".member-card").forEach(card => {
     const id = Number(card.dataset.id);
 
-    card.classList.remove(
-      "main-first",
-      "main-second"
-    );
+    card.classList.remove("main-first", "main-second");
 
     const oldRank = card.querySelector(".main-rank");
 
@@ -266,7 +333,7 @@ function updateMainSelection() {
 
       const rank = document.createElement("div");
       rank.className = "main-rank";
-      rank.textContent = "1位";
+      rank.textContent = "🥇 1位";
 
       card.prepend(rank);
     }
@@ -276,7 +343,7 @@ function updateMainSelection() {
 
       const rank = document.createElement("div");
       rank.className = "main-rank";
-      rank.textContent = "2位";
+      rank.textContent = "🥈 2位";
 
       card.prepend(rank);
     }
@@ -311,18 +378,21 @@ function startFinal() {
     finalWins[member.id] = 0;
   });
 
-  finalPairs = [];
+  const allPairs = [];
 
   for (let i = 0; i < finalCandidates.length; i++) {
     for (let j = i + 1; j < finalCandidates.length; j++) {
-      finalPairs.push([
+      allPairs.push([
         finalCandidates[i],
         finalCandidates[j]
       ]);
     }
   }
 
-  finalPairs = shuffle(finalPairs);
+  finalPairs = shuffle(allPairs).slice(
+    0,
+    Math.min(FINAL_MATCHES, allPairs.length)
+  );
 
   finalPairIndex = 0;
 
@@ -335,8 +405,10 @@ function showFinalIntro() {
   memberList.innerHTML = "";
 
   progress.textContent = "決勝";
-
   instruction.textContent = "";
+
+  nextButton.style.display = "";
+  backButton.style.display = "";
 
   const intro = document.createElement("div");
 
@@ -365,11 +437,13 @@ function showFinalPair() {
   instruction.textContent =
     "より好きな顔を1人選んでください";
 
+  nextButton.style.display = "none";
+  backButton.style.display = "none";
+
   pair.forEach(member => {
     const card = document.createElement("div");
 
     card.className = "member-card";
-
     card.dataset.id = member.id;
 
     card.innerHTML = `
@@ -502,6 +576,15 @@ nextButton.addEventListener("click", () => {
 
 backButton.addEventListener("click", () => {
 
+  if (phase === "top") {
+    return;
+  }
+
+  if (phase === "start") {
+    showTopPage();
+    return;
+  }
+
   if (phase === "mainIntro") {
     currentRound = rounds.length - 1;
     showRound();
@@ -511,6 +594,7 @@ backButton.addEventListener("click", () => {
   if (phase === "preliminary") {
 
     if (currentRound <= 0) {
+      showStartPage();
       return;
     }
 
@@ -544,4 +628,4 @@ backButton.addEventListener("click", () => {
   }
 });
 
-showRound();
+showTopPage();
