@@ -468,25 +468,11 @@ function showFinalRanking() {
     (a, b) => finalWins[b.id] - finalWins[a.id]
   );
 
-  const displayOrder = [
-    ranking[4],
-    ranking[3],
-    ranking[5],
-    ranking[1],
-    ranking[0],
-    ranking[2],
-    ranking[7],
-    ranking[6],
-    ranking[8]
-  ];
-
   const result = document.createElement("div");
   result.className = "ranking-list";
 
-  displayOrder.forEach((member, index) => {
-    if (!member) return;
-
-    const actualRank = ranking.indexOf(member) + 1;
+  ranking.slice(0, 9).forEach((member, index) => {
+    const actualRank = index + 1;
 
     const item = document.createElement("div");
     item.className = "ranking-item";
@@ -517,7 +503,6 @@ function showFinalRanking() {
   nextButton.style.display = "none";
   backButton.style.display = "none";
 }
-
 nextButton.addEventListener("click", () => {
 
   if (phase === "mainIntro") {
