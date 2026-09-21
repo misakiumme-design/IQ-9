@@ -210,15 +210,16 @@ function showMainRound() {
       <div class="member-group">${member.group}</div>
     `;
 
-    card.addEventListener("click", () => {
+    card.onclick = function() {
       selectMainMember(member.id);
-    });
+    };
 
     memberList.appendChild(card);
   });
 }
 
 function selectMainMember(id) {
+
   if (mainFirst === id) {
     mainFirst = null;
   } else if (mainSecond === id) {
@@ -233,11 +234,12 @@ function selectMainMember(id) {
 }
 
 function updateMainSelection() {
+
   document.querySelectorAll(".member-card").forEach(card => {
+
     const id = Number(card.dataset.id);
 
     card.classList.remove(
-      "selected",
       "main-first",
       "main-second"
     );
@@ -249,20 +251,26 @@ function updateMainSelection() {
     }
 
     if (id === mainFirst) {
+
       card.classList.add("main-first");
 
       const rank = document.createElement("div");
+
       rank.className = "main-rank";
       rank.textContent = "🥇 1位";
+
       card.prepend(rank);
     }
 
     if (id === mainSecond) {
+
       card.classList.add("main-second");
 
       const rank = document.createElement("div");
+
       rank.className = "main-rank";
       rank.textContent = "🥈 2位";
+
       card.prepend(rank);
     }
   });
