@@ -13,7 +13,7 @@ const members = [
   { id: 12, name: "優希", group: "HelloYouth", image: "images/優希.JPG" },
   { id: 13, name: "原直子", group: "トキヲイキル", image: "images/原直子.JPG" },
   { id: 14, name: "大島向葵", group: "HelloYouth", image: "images/大島向葵.JPG" },
-  { id: 15, name: "大庭彩歌", group: "トキヲイキル", image: "images/obaayaka.jpg" },
+  { id: 15, name: "大庭彩歌", group: "トキヲイキル", image: "images/大庭彩歌.jpg" },
   { id: 16, name: "大石芽依", group: "トキヲイキル(サポメン)", image: "images/大石芽依.JPG" },
   { id: 17, name: "大葉みらい", group: "HelloYouth", image: "images/大葉みらい.JPG" },
   { id: 18, name: "天瀬かな", group: "トキヲイキル(サポメン)", image: "images/天瀬かな.JPG" },
@@ -242,12 +242,28 @@ function updateMainSelection() {
       "main-second"
     );
 
+    const oldRank = card.querySelector(".main-rank");
+
+    if (oldRank) {
+      oldRank.remove();
+    }
+
     if (id === mainFirst) {
       card.classList.add("main-first");
+
+      const rank = document.createElement("div");
+      rank.className = "main-rank";
+      rank.textContent = "🥇 1位";
+      card.prepend(rank);
     }
 
     if (id === mainSecond) {
       card.classList.add("main-second");
+
+      const rank = document.createElement("div");
+      rank.className = "main-rank";
+      rank.textContent = "🥈 2位";
+      card.prepend(rank);
     }
   });
 }
