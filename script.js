@@ -9,7 +9,7 @@ const members = [
   { id: 8, name: "YUYU", group: "MAGICAL SPEC", image: "images/YUYU.JPG" },
   { id: 9, name: "一条虹花", group: "IQP研究生", image: "images/一条虹花.JPG" },
   { id: 10, name: "七瀬りあ", group: "IQP研究生", image: "images/七瀬りあ.JPG" },
-  { id: 11, name: "伊藤麻希", group: "トキヲイキル", image: "images/itomaki.jpg" },
+  { id: 11, name: "伊藤麻希", group: "トキヲイキル", image: "images/伊藤麻希.jpg" },
   { id: 12, name: "優希", group: "HelloYouth", image: "images/優希.JPG" },
   { id: 13, name: "原直子", group: "トキヲイキル", image: "images/原直子.JPG" },
   { id: 14, name: "大島向葵", group: "HelloYouth", image: "images/大島向葵.JPG" },
@@ -260,11 +260,6 @@ nextButton.addEventListener("click", () => {
   }
 
   if (phase === "preliminary") {
-
-    if (selectedMembers.length === 0) {
-      alert("少なくとも1人選んでください。");
-      return;
-    }
 
     const currentMembers = rounds[currentRound];
 
