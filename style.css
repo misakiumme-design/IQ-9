@@ -53,10 +53,13 @@ h1 {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: initial;
 }
 
-
+.member-name {
+  padding: 8px 4px 2px;
+  font-size: 14px;
+  font-weight: bold;
+}
 
 .member-group {
   padding: 0 4px 8px;
