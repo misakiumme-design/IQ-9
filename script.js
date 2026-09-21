@@ -468,20 +468,36 @@ function showFinalRanking() {
     (a, b) => finalWins[b.id] - finalWins[a.id]
   );
 
+  const displayOrder = [
+    ranking[4],
+    ranking[3],
+    ranking[5],
+    ranking[1],
+    ranking[0],
+    ranking[2],
+    ranking[7],
+    ranking[6],
+    ranking[8]
+  ];
+
   const result = document.createElement("div");
   result.className = "ranking-list";
 
-  ranking.slice(0, 9).forEach((member, index) => {
+  displayOrder.forEach((member, index) => {
+    if (!member) return;
+
+    const actualRank = ranking.indexOf(member) + 1;
+
     const item = document.createElement("div");
     item.className = "ranking-item";
 
-    let rankText = `${index + 1}位`;
+    let rankText = `${actualRank}位`;
 
-    if (index === 0) {
+    if (actualRank === 1) {
       rankText = "🥇1位";
-    } else if (index === 1) {
+    } else if (actualRank === 2) {
       rankText = "🥈2位";
-    } else if (index === 2) {
+    } else if (actualRank === 3) {
       rankText = "🥉3位";
     }
 
@@ -501,6 +517,7 @@ function showFinalRanking() {
   nextButton.style.display = "none";
   backButton.style.display = "none";
 }
+
 nextButton.addEventListener("click", () => {
 
   if (phase === "mainIntro") {
@@ -566,11 +583,6 @@ backButton.addEventListener("click", () => {
     return;
   }
 
-  if (phase === "start") {
-    showTopPage();
-    return;
-  }
-
   if (phase === "mainIntro") {
     currentRound = rounds.length - 1;
     showRound();
@@ -580,7 +592,7 @@ backButton.addEventListener("click", () => {
   if (phase === "preliminary") {
 
     if (currentRound <= 0) {
-      showStartPage();
+      showTopPage();
       return;
     }
 
