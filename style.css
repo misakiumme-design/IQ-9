@@ -109,3 +109,6 @@ h1 {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+.member-card {
+  background: red !important;
+}
