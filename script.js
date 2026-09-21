@@ -105,8 +105,9 @@ function showTopPage() {
   page.className = "top-page";
 
   page.innerHTML = `
-    <h2>好き顔9</h2>
-    <p>あなたの「好きな顔」を9人選ぼう。</p>
+    <h2>IQP好き顔9</h2>
+    <p>あなたの好きな「顔」を9人選ぼう。</p>
+    <p>概ねIQPオフィシャルHP引用(ご都合メンバー有)</p>
     <button class="start-button" id="start-button">スタート</button>
   `;
 
