@@ -55,10 +55,12 @@ h1 {
   height: auto;
 }
 
-.member-name {
-  padding: 8px 4px 2px;
-  font-size: 14px;
-  font-weight: bold;
+.member-card img {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: contain;
+  background: red;
 }
 
 .member-group {
